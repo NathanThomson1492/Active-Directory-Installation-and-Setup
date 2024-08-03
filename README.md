@@ -65,91 +65,126 @@ Next we will go ahead and setup our client machine. The process is very similar 
 
 
 <p>
-Now that we have both our server and our client machines created, let's use Remote Desktop to log into Client-1 and test the connection between the two devices. After logging into Client-1 open up an instance of command prompt and utilize the 'ping' command to test Client-1's connectivity to the server. 
+Now that we have both our server and our client machines created, let's use Remote Desktop to log into Client-1 and test the connection between the two devices. After logging into Client-1 open up an instance of command prompt and utilize the 'ping' command to test Client-1's connectivity to the server. Note that our ping request is timing out as our domain controller is currently not allowing ICMP traffic which is what the ping command uses to send it's packets. 
 </p>
 
 
 ![5 ping_DC1_from_CLIENT1](https://github.com/user-attachments/assets/470ee415-1745-43d6-ae56-573d9ba0fc26)
 <br />
-![8 Install_ActiveDIrectory](https://github.com/user-attachments/assets/5c3c106e-0eeb-44c0-8dd3-4af5e4680e3c)
+
 <p>
- lorem ipsus 
+Log in to the Domain Controller, and once you have successfully accessed the system, proceed to enable ICMPv4 on the local Windows Firewall. To do this, navigate to the firewall settings and locate the inbound rules. Then, create a new rule or modify an existing rule to allow ICMPv4 traffic, ensuring that the necessary permissions are set to facilitate the desired network communication. Next we can return to Client-1, use the ping command again and see that our requests are going through and thus verifying that Client-1 can communicate with our domain controller as can be seen in the following two images. 
+</p>
+
+![6 Enable_ICMP_DC-1](https://github.com/user-attachments/assets/b07e44e6-16a3-4ca6-ac10-16b6ddf168e0)
+
+![7 verify_ping_to_DC1](https://github.com/user-attachments/assets/b437c2f7-b281-4f3f-bc71-4fed30d420e6)
+<br />
+<h2> Active Directory Installation</h2>
+<p>
+  Now we can proceed to installing Active Directory on our Domain Controller. Begin by logging into DC-1. Once you have successfully accessed the system, proceed to install the Active Directory Domain Services (AD DS) role. This can be done through the Server Manager by adding roles and features and selecting AD DS from the list. Ensure that you install Active Directory Users and Computers and proceed by installing the necessary dependencies. 
+</p>
+
+![8 Install_ActiveDIrectory](https://github.com/user-attachments/assets/5c3c106e-0eeb-44c0-8dd3-4af5e4680e3c)
+<br />
+<p>
+Next, you will need to promote the server to a Domain Controller (DC). To do this, initiate the promotion process and select the option to set up a new forest. When prompted, specify the new forest name as "mydomain.com" and follow the steps to complete the configuration. 
 </p>
 
 ![9 promteDC1toDOMAINCONTRLLER](https://github.com/user-attachments/assets/6743c7b9-3f3d-4fdc-ad68-ee0ad54c8b28)
+<br />
+
+<h2>Active Directory Configuration</h2>
+<br />
+  
 <p>
- lorem ipsus 
+After the promotion process is complete, restart the server to apply all changes. Once the server has rebooted, log back into DC-1 using the credentials for the newly created domain. You should log in as the user "mydomain.com\labuser" to ensure proper access to the domain controller functions and features.
 </p>
+
+<p>Open Active Directory Users and Computers (ADUC). Within the ADUC console, navigate to the desired location in the directory tree where you would like to create a new Organizational Unit (OU). Right-click on the appropriate node (as seen in the image below), select "New," and then choose "Organizational Unit." Name this new OU "_EMPLOYEES" to organize your employee accounts. </p>
 
 ![11 CREATE_ORGINIZATIONAL_UNITS](https://github.com/user-attachments/assets/ccce09c2-950a-4099-b119-9f88d12ade9e)
 
-<p>
- lorem ipsus 
-</p>
-
 ![12_NEW_ORGINIZATIONAL_UNITS](https://github.com/user-attachments/assets/0b4e42a9-4e35-4e2b-9c4e-0ad71fabf3f7)
+<br />
+<br />
+
 <p>
- lorem ipsus 
+ Next, you will need to create another Organizational Unit. Follow the same steps by right-clicking on the desired node, selecting "New," and then "Organizational Unit." Name this new OU "_ADMINS" to manage your administrative accounts separately.
 </p>
 
 ![13create_admin_useraccount](https://github.com/user-attachments/assets/b1e15e1c-0931-43ae-9fb1-b7cb68e11b7e)
-
+<br />
+<br />
 <p>
- lorem ipsus 
+ After creating the OUs, you will need to add a new employee account. Right-click on the "_EMPLOYEES" OU, select "New," and then "User." Enter the details for the new employee, naming the account "Jane Doe" and assigning a username of "jane_admin." Ensure that you set the same password as used for other administrative accounts for consistency. 
 </p>
 
+<p>Once Jane Doe's account is created, you will need to add her to the appropriate security group. Locate the "Domain Admins" Security Group in ADUC, right-click on it, and select "Properties." Go to the "Members" tab, click "Add," and type in "nathan_admin" to add her to the "Domain Admins" Security Group. This grants her the necessary administrative privileges within the domain. </p>
+
 ![14 add_adminaccount_to_domainadmins_group](https://github.com/user-attachments/assets/a51f4162-d077-4d8e-b428-fb8794f0cc76)
+<br />
+<br />
 
 <p>
- lorem ipsus 
+ Finally, to ensure that the new account has been properly configured and the changes have taken effect, log out or close the Remote Desktop connection to DC-1. Then, initiate a new Remote Desktop connection and log back in using the credentials for "mydomain.com\jane_admin." This verifies that the new administrative account is functioning correctly.
 </p>
 
 ![15-16 LOGINasNEWadminACCOUNT](https://github.com/user-attachments/assets/86a35612-ed61-458c-b056-827c2d88e89d)
+<br />
+<br />
 <p>
- lorem ipsus 
+Access the Azure Portal using your preferred web browser. Once you are logged in, navigate to the virtual machine settings for Client-1. Locate the DNS settings for this virtual machine and update them to reflect the Domain Controller’s (DC) private IP address. This change ensures that Client-1 uses the Domain Controller for DNS resolution.
 </p>
 
+<p> After updating the DNS settings, remain in the Azure Portal and find the option to restart Client-1. Initiate a restart of the virtual machine to apply the new DNS configuration settings. </p>
 
 ![17 changeDNSforCLIENT1](https://github.com/user-attachments/assets/3bcd9806-b163-4024-8c1d-6c2e9c81d3ee)
+<br />
+<br />
 
 <p>
- lorem ipsus 
+Once Client-1 has restarted, use Remote Desktop Protocol (RDP) to log into the machine. Log in using the credentials for the original local administrator account, typically "labuser." After successfully logging in, proceed to join Client-1 to the domain. This involves accessing the system properties, navigating to the domain settings, and entering the appropriate domain name. Confirm the action and allow the computer to restart to complete the domain joining process.
 </p>
 
 ![19 changeDOMAINforCLIENT1](https://github.com/user-attachments/assets/2ecec55a-61d3-4326-8841-02744c6410d2)
+<br />
+<br />
 
 <p>
- lorem ipsus 
+ Following the restart of Client-1, establish a Remote Desktop connection to the Domain Controller. Log into the Domain Controller using the appropriate administrative credentials. Open the Active Directory Users and Computers (ADUC) console. In the ADUC interface, navigate to the “Computers” container located at the root of the domain. Verify that Client-1 is listed in this container, confirming that it has successfully joined the domain. 
 </p>
 
-
 ![20 verifyCLIENT1is_inAD](https://github.com/user-attachments/assets/472161ee-af33-4539-b31f-2f543a5ae427)
+<br />
+<br />
 
 <p>
- lorem ipsus 
+Begin by logging into Client-1 using the credentials for the administrative account "mydomain.com\jane_admin." Once you have successfully logged in, navigate to the system properties by right-clicking on "This PC" or "Computer" on the desktop or in File Explorer, and then selecting "Properties." From there, access the "Advanced system settings" link to open the System Properties dialog box. 
 </p>
 
 ![22-26ADDdom_usersTOclient1](https://github.com/user-attachments/assets/424fe53a-458b-498d-8006-6610d249f31e)
-
+<br />
+<br />
 <p>
- lorem ipsus 
+ In the System Properties window, click on the "Remote" tab to access the Remote Desktop settings. Within the Remote Desktop section, select the option to allow remote connections to this computer. Additionally, click on the "Select Users" button to specify which users or groups are permitted to access the system via Remote Desktop. 
 </p>
 
-
 ![ADD3nuUSERS](https://github.com/user-attachments/assets/ce575289-cca4-483a-9521-5e264109b862)
+<br />
 
 <p>
  lorem ipsus 
 </p>
 
 ![BENDOElocksOUTofACCOUNT](https://github.com/user-attachments/assets/76d27db0-3d5b-4c94-9e71-b2063019e3c0)
+<br />
 
 <p>
  lorem ipsus 
 </p>
 
 
-![Enable_ICMP_DC-1](https://github.com/user-attachments/assets/9d077f6a-4799-4eda-9f1e-07b0e8cd1532)
 
 
 
