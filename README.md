@@ -174,14 +174,14 @@ Begin by logging into Client-1 using the credentials for the administrative acco
 <br />
 
 <p>
- lorem ipsus 
+ 
 </p>
 
 ![BENDOElocksOUTofACCOUNT](https://github.com/user-attachments/assets/76d27db0-3d5b-4c94-9e71-b2063019e3c0)
 <br />
 
 <p>
- lorem ipsus 
+  
 </p>
 
 
