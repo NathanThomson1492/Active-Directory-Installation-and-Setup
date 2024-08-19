@@ -1,4 +1,4 @@
-# Active-Directory-Installation-and-Setup
+# Active Directory: Installationand Setup
 <p align="center">
 <img src="https://i.imgur.com/pU5A58S.png" alt="Microsoft Active Directory Logo"/>
 </p>
@@ -42,8 +42,11 @@ Windows Active Directory is a directory service developed by Microsoft for Windo
 <p>
 To start things off we first need to log into Azure to create our virtual machine that will serve as our server that will eventually be promoted into a domain controller. To do this we start by navigatiing to the virtual machines tab and then choose "create new virtual machine". We then need to choose the proper region that our machine is held in as well as the machine name, image and resource group. Remember for the machine that you will set up as a domain controller, it must be set up as a server. In this lesson we will be using Windows Server 2022 as our image.
 </p>
-
+<p sixe="10px"> 
+  
 ![image](https://github.com/user-attachments/assets/67f58894-710d-4164-96eb-f857e40ff212)
+  
+ </p>
 <br />
 
 <br />
@@ -160,7 +163,7 @@ Once Client-1 has restarted, use Remote Desktop Protocol (RDP) to log into the m
 <br />
 
 <p>
-Begin by logging into Client-1 using the credentials for the administrative account "mydomain.com\jane_admin." Once you have successfully logged in, navigate to the system properties by right-clicking on "This PC" or "Computer" on the desktop or in File Explorer, and then selecting "Properties." From there, access the "Advanced system settings" link to open the System Properties dialog box. 
+Begin by logging into Client-1 using the credentials for the administrative account "mydomain.com\jane_admin." Once you have successfully logged in, navigate to the system properties by right-clicking on "This PC" or "Computer" on the desktop or in File Explorer, and then selecting "Properties." From there, access the "Advanced system settings" link to open the System Properties dialog box. 111
 </p>
 
 ![22-26ADDdom_usersTOclient1](https://github.com/user-attachments/assets/424fe53a-458b-498d-8006-6610d249f31e)
@@ -170,19 +173,22 @@ Begin by logging into Client-1 using the credentials for the administrative acco
  In the System Properties window, click on the "Remote" tab to access the Remote Desktop settings. Within the Remote Desktop section, select the option to allow remote connections to this computer. Additionally, click on the "Select Users" button to specify which users or groups are permitted to access the system via Remote Desktop. 
 </p>
 
+<h2> Adding new users and handling lockout</h2>
+<br />
+<p> For our final section we are going to add a few users to our domain.To add three new users, "Ben Doe," "Jane Doe," and "Emma Smith," to your domain in Windows Active Directory, follow these steps: Open the "Active Directory Users and Computers" (ADUC) console and navigate to the organizational unit _EMPLOYEES that we created earlier. Right-click the _EMPLOYEES, select "New," and then "User." In the wizard that appears, enter "Ben" as the first name, "Doe" as the last name. For this tutorial I am going to  "b_doe" as the user logon name. Set a password, configure any necessary options, and click "Finish." Repeat these steps for "Jane Doe" and "Emma Smith," using "j_doe" and "e_smith" as their respective logon names. </p>
+<br />
+
+
 ![ADD3nuUSERS](https://github.com/user-attachments/assets/ce575289-cca4-483a-9521-5e264109b862)
 <br />
-
+<h2> Conclusion</h2>
 <p>
- 
+ In conclusion, this tutorial has guided you through the essential steps to set up and manage a Windows Active Directory environment. By first setting up resources in Azure and ensuring connectivity between the client and Domain Controller, we established a solid foundation for our AD infrastructure. We then installed Active Directory, created an admin account along with three standard user accounts, and configured Remote Desktop access for non-administrative users on Client-1. With these steps completed, you now have a functional and secure Active Directory environment that can be expanded and managed according to your organization's needs.
 </p>
 
-![BENDOElocksOUTofACCOUNT](https://github.com/user-attachments/assets/76d27db0-3d5b-4c94-9e71-b2063019e3c0)
-<br />
 
-<p>
-  
-</p>
+
+
 
 
 
